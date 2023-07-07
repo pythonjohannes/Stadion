@@ -1,0 +1,123 @@
+<!-- -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{specifika_pass[0][0].passets_namn}}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    {{ bootstrap.load_css()}}
+    {% from "bootstrap5/form.html" import render_form %}
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+
+<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand" href={{url_for("hem")}}>
+    Hem
+  </a>
+</nav>
+
+
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="alert alert-primary fade show alert-dismissible" role="alert">
+<ul class="flashes">
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+    {% endfor %}
+    {% endif %}
+{% endwith %}
+</ul>
+
+
+</div>
+    {% set starttid_för_strukturera = {"starttid": "_", "sluttid": "-"} %}
+    {% for passet in specifika_pass%}
+    {% set passet = passet[0]%}
+
+
+
+    {% if not passet.anlänt and not passet.avslutat  %}
+
+        {% if starttid_för_strukturera.starttid != passet.starttid_timme|string+":"+passet.starttid_minut|string %}
+        <p class="ny_tid">{{passet.starttid_timme|string+":"+passet.starttid_minut|string}}</p>
+        {% set ny_starttid = passet.starttid_timme|string+":"+passet.starttid_minut|string %}
+        {% if starttid_för_strukturera.update({"starttid": ny_starttid}) %} {% endif %}
+        {% endif %}
+        <div class="card w-75 mx-auto bg-light position-relative">
+
+        {% elif passet.avslutat %}
+        <div class="card w-75 mx-auto card_avslutat">
+
+            {% elif passet.anlänt %}
+                {% if starttid_för_strukturera.sluttid != passet.sluttid_timme|string+":"+passet.sluttid_minut|string %}
+                <p class="ny_tid">{{passet.sluttid_timme|string+":"+passet.sluttid_minut|string}}</p>
+                {% set ny_sluttid = passet.sluttid_timme|string+":"+passet.sluttid_minut|string %}
+                {% if starttid_för_strukturera.update({"sluttid": ny_sluttid}) %} {% endif %}
+                {% endif %}
+                <div class="card w-75 mx-auto card_påbörjat">
+                    {% endif %}
+
+
+  <div class="card-body">
+    <h4 class="card-title">{{passet.arbetarens_namn}}</h4>
+    <p class="card-text">Starttid: {{passet.starttid_timme}}:{{passet.starttid_minut}}</p>
+      <p class="card-text">Sluttid:    {{passet.sluttid_timme}}:{{passet.sluttid_minut}}</p>
+      <p class="card-text">Anlände: {{passet.instämplad_timme}}{% if passet.instämplad_timme %}:{% endif %}{{passet.instämplad_minut}}</p>
+      <p class="card-text">Gick:    {{passet.utstämplad_timme}}{% if passet.utstämplad_timme %}:{% endif %}{{passet.utstämplad_timme}}</p>
+
+      <!--Stämpla in -->
+      <div class="form">
+          <form method="POST", action={{url_for("stämpla_in", id=passet.id)}}>
+              <input type="number" name="timme" value={{passet.starttid_timme}}>
+              <input type="number" name="minut" value={{passet.starttid_minut}}>
+              <input type="hidden" name="passets_namn" value={{passet.passets_namn}}>
+              <button type="submit">Stämpla in</button>
+          </form>
+      </div>
+      <!--Stämpla ut -->
+      <div class="form">
+          <form method="POST", action={{url_for("stämpla_ut", id=passet.id)}}>
+              <input type="number" name="timme" value={{passet.sluttid_timme}}>
+              <input type="number" name="minut" value={{passet.sluttid_minut}}>
+              <input type="hidden" name="passets_namn" value={{passet.passets_namn}}>
+              <button type="submit">Stämpla ut</button>
+          </form>
+      </div>
+
+      <p><i>Kommentar:{% if passet.kommentar %}
+      {{ passet.kommentar }}
+      {% endif %}</i></p>
+
+      <div class="input-group">
+          <form method="POST", action={{url_for("addcomment")}}>
+              <input class="form-control w-50" name="kommentar" type="text" placeholder="Lägg till kommentar..." required>
+              <div class="input-group-append">
+                  <button class="btn btn-outline-dark kommentar-btn" type="submit"> Kommentera </button>
+                  </div>
+              <input type="hidden" name="personens_id" value={{passet.id}}>
+              <input type="hidden" name="passets_namn" value={{passet.passets_namn}}>
+          </form>
+      </div>
+      <a href={{url_for("delete", id=passet.id, passets_namn=passet.passets_namn)}} class="color-danger text-right position-absolute top-0 end-0" ><img src="/static/delete.png" width="17"></a>
+  </div>
+  <div class="card-footer text-muted">
+  </div>
+</div>
+ {% endfor %}
+<body>
+<div class="card text-center w-75 mx-auto ">
+
+  <div class="card-body">
+    <a href={{url_for("adda", passet=specifika_pass[0][0].passets_namn)}} class="btn btn-primary stretched-link btn-lg btn-default btn-block"><h5>Lägg Till Personer</h5></a>
+  </div>
+
+</div>
+</body>
+</html>
