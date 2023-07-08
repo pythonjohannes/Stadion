@@ -43,7 +43,8 @@ class Johannes(db.Model):
     avslutat = db.Column(db.Boolean, unique=False, default=False)
     kommentar = db.Column(db.String, unique=False, nullable=True)
 
-db.create_all()
+with app.app_context():
+    db.create_all()
 
 class TestForm(FlaskForm):
     passet = StringField(validators=[DataRequired()])
