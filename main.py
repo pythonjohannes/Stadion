@@ -12,9 +12,10 @@ app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 WTF_CSRF_SECRET_KEY = 'a random string'
 bootstrap = Bootstrap5(app)
 
-db = SQLAlchemy()
+
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL", "sqlite:///all_info-arbetare.db")
-db.init_app(app)
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+db = SQLAlchemy(app)
 
 class Adam(db.Model):
     id = db.Column(db.Integer, primary_key=True)
