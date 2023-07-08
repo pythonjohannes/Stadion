@@ -7,7 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "jhadshjasdjh")
 
 WTF_CSRF_SECRET_KEY = 'a random string'
 bootstrap = Bootstrap5(app)
@@ -33,13 +33,13 @@ class Johannes(db.Model):
     arbetarens_namn = db.Column(db.String, unique=False, nullable=False)
     starttid_timme = db.Column(db.Integer, nullable=False)
     starttid_minut = db.Column(db.Integer, nullable=False)
-    instämplad_timme = db.Column(db.Integer, nullable=True, default="")
-    instämplad_minut = db.Column(db.Integer, nullable=True, default="")
+    instämplad_timme = db.Column(db.String, nullable=True, default="")
+    instämplad_minut = db.Column(db.String, nullable=True, default="")
     anlänt = db.Column(db.Boolean, unique=False, default=False)
     sluttid_timme = db.Column(db.Integer, nullable=False)
     sluttid_minut = db.Column(db.Integer, nullable=False)
-    utstämplad_timme = db.Column(db.Integer, nullable=True, default="")
-    utstämplad_minut = db.Column(db.Integer, nullable=True, default="")
+    utstämplad_timme = db.Column(db.String, nullable=True, default="")
+    utstämplad_minut = db.Column(db.String, nullable=True, default="")
     avslutat = db.Column(db.Boolean, unique=False, default=False)
     kommentar = db.Column(db.String, unique=False, nullable=True)
 
@@ -171,7 +171,7 @@ def stämpla_ut(id):
 #       return render_template("pass.html", specifika_pass=specifika_pass, comment_form=comment_form)
 
 if __name__ == "__main__":
-    app.run(debug=True, host='dpg-cikl2itph6eg6kca9egg-a', port=5432)
+    app.run(debug=True)
 
 
 #anlänt och instämplad. Konsekvens.
