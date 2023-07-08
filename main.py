@@ -119,11 +119,11 @@ def delete(id, passets_namn):
 def addcomment():
      personens_id = request.form["personens_id"]
      kommentar = request.form["kommentar"]
-     passets_namn = request.form["passets_namn"]
      personen = Johannes.query.get_or_404(personens_id)
-     personen.kommentar = kommentar
+     personen.kommentar += kommentar
      db.session.commit()
      flash("Kommentaren har lagts till")
+     passets_namn = request.form["passets_namn"]
      return redirect(url_for("arbetspass", passet=passets_namn))
 
 @app.route("/stämpla_in/<id>", methods=["POST", "GET"])

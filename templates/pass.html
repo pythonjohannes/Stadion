@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
     <title>{{specifika_pass[0][0].passets_namn}}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
@@ -64,47 +64,73 @@
                 <div class="card w-75 mx-auto card_påbörjat">
                     {% endif %}
 
-
+<!-- Personernas kort -->
   <div class="card-body">
-    <h4 class="card-title">{{passet.arbetarens_namn}}</h4>
-    <p class="card-text">Starttid: {{passet.starttid_timme}}:{{passet.starttid_minut}}</p>
-      <p class="card-text">Sluttid:    {{passet.sluttid_timme}}:{{passet.sluttid_minut}}</p>
-      <p class="card-text">Anlände: {{passet.instämplad_timme}}{% if passet.instämplad_timme %}:{% endif %}{{passet.instämplad_minut}}</p>
-      <p class="card-text">Gick:    {{passet.utstämplad_timme}}{% if passet.utstämplad_minut %}:{% endif %}{{passet.utstämplad_minut}}</p>
+    <h2 class="card-title">{{passet.arbetarens_namn}}</h2>
+      <div class="row">
+          <div class="col-3">
+              <p class="card-text mb-1"><u>Starttid</u></p>
+              <em>{{passet.starttid_timme}}:{{passet.starttid_minut}}</em>
+              <p class="card-text mt-2 mb-1"><u>Sluttid</u></p>
+              <em>{{passet.sluttid_timme}}:{{passet.sluttid_minut}}</em>
+          </div>
+          <div class="col-3">
+              <p class="card-text mb-1"><u>Anlände</u></p>
+                  <em>{% if passet.instämplad_timme %}{{passet.instämplad_timme}}:{{passet.instämplad_minut}}{%else%}
+                      <p>   </p>{% endif %}</em>
+              <p class="card-text mt-2 mb-1"><u>Gick</u></p>
+                    <em>{% if passet.utstämplad_minut %}{{passet.utstämplad_timme}}:{{passet.utstämplad_minut}}{% endif %}</em>
+          </div>
 
-      <!--Stämpla in -->
-      <div class="form">
-          <form method="POST", action={{url_for("stämpla_in", id=passet.id)}}>
-              <input type="number" name="timme" value={{passet.starttid_timme}}>
-              <input type="number" name="minut" value={{passet.starttid_minut}}>
-              <input type="hidden" name="passets_namn" value={{passet.passets_namn}}>
-              <button type="submit">Stämpla in</button>
-          </form>
-      </div>
+          <!--Stämpla in -->
+          <div class="col-6">
+              <div class="form">
+                  <form method="POST", action={{url_for("stämpla_in", id=passet.id)}}>
+                      <input class="mb-4" style='width:3em' type="number" name="timme" value={{passet.starttid_timme}}> :
+                      <input style='width:3em' type="number" name="minut" value={{passet.starttid_minut}}>
+                      <input type="hidden" name="passets_namn" value={{passet.passets_namn}}>
+                      <button class="btn btn-dark" type="submit">Ok</button>
+                  </form>
+              </div>
+              <div class="form">
+                  <form method="POST", action={{url_for("stämpla_ut", id=passet.id)}}>
+                      <input style='width:3em' type="number" name="timme" value={{passet.sluttid_timme}}>
+                      <input style='width:3em' type="number" name="minut" value={{passet.sluttid_minut}}>
+                      <input type="hidden" name="passets_namn" value={{passet.passets_namn}}>
+                      <button class="btn btn-dark" type="submit">Ok</button>
+                  </form>
+              </div>
+          </div>
+    </div>
+
+
       <!--Stämpla ut -->
-      <div class="form">
-          <form method="POST", action={{url_for("stämpla_ut", id=passet.id)}}>
-              <input type="number" name="timme" value={{passet.sluttid_timme}}>
-              <input type="number" name="minut" value={{passet.sluttid_minut}}>
-              <input type="hidden" name="passets_namn" value={{passet.passets_namn}}>
-              <button type="submit">Stämpla ut</button>
-          </form>
-      </div>
 
-      <p><i>Kommentar:{% if passet.kommentar %}
-      {{ passet.kommentar }}
-      {% endif %}</i></p>
+      <hr/>
+      <div class="row">
+          <div class="col-4">
+              <p><i>Kommentar:{% if passet.kommentar %}
+                  {{ passet.kommentar }}
+                  {% endif %}
+              </i></p>
 
-      <div class="input-group">
-          <form method="POST", action={{url_for("addcomment")}}>
-              <input class="form-control w-50" name="kommentar" type="text" placeholder="Lägg till kommentar..." required>
-              <div class="input-group-append">
-                  <button class="btn btn-outline-dark kommentar-btn" type="submit"> Kommentera </button>
-                  </div>
+          </div>
+          <div class="col-8">
+              <div class="input-group">
+                  <form method="POST", action={{url_for("addcomment")}}>
+                      <input class="form-control" name="kommentar" type="text" placeholder="Lägg till kommentar..." required>
+                      <div class="input-group-append">
+                          <button class="btn btn-outline-dark kommentar-btn" type="submit"> Kommentera </button>
+                      </div>
               <input type="hidden" name="personens_id" value={{passet.id}}>
               <input type="hidden" name="passets_namn" value={{passet.passets_namn}}>
           </form>
       </div>
+
+          </div>
+      </div>
+
+
       <a href={{url_for("delete", id=passet.id, passets_namn=passet.passets_namn)}} class="color-danger text-right position-absolute top-0 end-0" ><img src="/static/delete.png" width="17"></a>
   </div>
   <div class="card-footer text-muted">
