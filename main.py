@@ -49,10 +49,10 @@ with app.app_context():
 class TestForm(FlaskForm):
     passet = StringField(validators=[DataRequired()])
     namn = StringField("Arbetare", validators=[DataRequired()])
-    timme_start = SelectField("Tid Börja", choices=list(range(0,24)))
-    minut_start = SelectField(choices=list(range(0, 60)))
-    timme_slut = SelectField("Tid Sluta", choices=list(range(0, 24)))
-    minut_slut = SelectField(choices=list(range(0, 60)))
+    timme_start = SelectField("Tid Börja", choices=["{:02d}".format(num) for num in list(range(0,24))])
+    minut_start = SelectField(choices=["{:02d}".format(num) for num in list(range(0,60))])
+    timme_slut = SelectField("Tid Sluta", choices=["{:02d}".format(num) for num in list(range(0,24))])
+    minut_slut = SelectField(choices=["{:02d}".format(num) for num in list(range(0,60))])
     submit = SubmitField("Lägg till")
 
 

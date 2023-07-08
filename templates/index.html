@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
     <title>Hem</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/styles.css">
     {{ bootstrap.load_css()}}
 </head>
 <body style="background-color:#e6f3ff">
-<div class="card text-center w-75 mx-auto ">
+<div class="card text-center w-75 mx-auto mb-2 ">
 
-  <div class="card-body">
+  <div  class="card-body">
     <a href={{url_for("adda")}} class="btn btn-primary stretched-link bg-success btn-lg btn-default btn-block"><h5>Lägg Till Pass</h5></a>
   </div>
 
@@ -26,7 +27,7 @@
         -->
 
         {% for passets_namn in lista_pass %}
-        <div class="card w-75 mx-auto">
+        <div class="card w-75 mx-auto mb-1">
   <div class="card-body">
     <h5 class="card-title"><a href={{url_for("arbetspass", passet=passets_namn)}} class="text-decoration-none stretched-link">{{passets_namn}}</a></h5>
     <p class="card-text">Skapat: 4/7-2023</p>
