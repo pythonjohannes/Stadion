@@ -171,7 +171,7 @@ def stämpla_ut(id):
 #       return render_template("pass.html", specifika_pass=specifika_pass, comment_form=comment_form)
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='dpg-cikl2itph6eg6kca9egg-a', port=5432)
 
 
 #anlänt och instämplad. Konsekvens.
