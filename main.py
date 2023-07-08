@@ -4,15 +4,16 @@ from wtforms import StringField, SelectField, SubmitField, IntegerField
 from wtforms.validators import DataRequired
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
+import os
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "mff1910yes"
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 
 WTF_CSRF_SECRET_KEY = 'a random string'
 bootstrap = Bootstrap5(app)
 
 db = SQLAlchemy()
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///all_info-arbetare.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL", "sqlite:///all_info-arbetare.db")
 db.init_app(app)
 
 class Adam(db.Model):
