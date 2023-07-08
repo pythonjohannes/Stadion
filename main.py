@@ -120,7 +120,10 @@ def addcomment():
      personens_id = request.form["personens_id"]
      kommentar = request.form["kommentar"]
      personen = Johannes.query.get_or_404(personens_id)
-     personen.kommentar += kommentar
+     if personen.kommentar:
+         personen.kommentar = personen.kommentar+f"(nyy)" + kommentar
+     else:
+        personen.kommentar = kommentar
      db.session.commit()
      flash("Kommentaren har lagts till")
      passets_namn = request.form["passets_namn"]

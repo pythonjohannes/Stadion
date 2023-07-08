@@ -26,6 +26,10 @@ body {
     width: 4px
 }
 
+.container-fluid-nav div{
+  display: flex;
+justify-content: space-around;}
+
 /* For Mobile */
 @media screen and (max-width: 540px) {
   .card {
