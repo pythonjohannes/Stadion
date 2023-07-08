@@ -4,8 +4,6 @@ from wtforms import StringField, SelectField, SubmitField, IntegerField
 from wtforms.validators import DataRequired
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
-import sqlite3
-import requests
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "mff1910yes"
